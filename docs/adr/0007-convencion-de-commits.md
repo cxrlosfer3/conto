@@ -1,10 +1,27 @@
-# 0007. Convención de commits
+# ADR-007 - Convención de commits: Conventional Commits
+**Categoría:** Proceso de desarrollo
 
-Estado: Aceptada
+## Contexto
+Se quiere un historial legible y la posibilidad de generar changelog y versiones automáticamente más adelante.
+
+**Supuestos:** el equipo es pequeño y revisa los mensajes a mano.
+**Restricciones:** el proyecto no tiene Node, así que no hay commitlint por ahora.
+
+## Alternativas
+1. **Mensajes libres.** Sin reglas. Descartado porque el historial se vuelve inconsistente.
+2. **Gitmoji.** Mensajes con emojis. Descartado por ser menos usado y menos fácil de automatizar.
+3. **Conventional Commits 1.0.** Formato estándar con herramientas de automatización.
+
+## Criterios de Elección
+Legibilidad del historial, estándar extendido y posibilidad de automatizar.
 
 ## Decisión
-Se usa [Conventional Commits 1.0](https://www.conventionalcommits.org/es/v1.0.0/):
+Se adopta Conventional Commits 1.0.
 
+## Sustento
+Un commit equivale a un cambio con un solo propósito. El costo es la disciplina de seguirlo y que no hay verificación automática.
+
+## Aplicación en conto
 ```
 <tipo>(<alcance>): <descripción en minúsculas, imperativo, sin punto final>
 
@@ -12,20 +29,7 @@ Se usa [Conventional Commits 1.0](https://www.conventionalcommits.org/es/v1.0.0/
 
 [pie opcional: BREAKING CHANGE:, refs]
 ```
-
-**Tipos:** `feat`, `fix`, `docs`, `refactor`, `test`, `chore`, `build`, `ci`, `perf`, `style`.
-
-**Alcances** (los contextos de 0002 y áreas comunes): `captura`, `movimientos`, `categorizacion`, `analisis`, `cuenta`, `android`, `ios`, `docs`.
-
-**Idioma:** el tipo y el alcance van como arriba; la descripción en español.
-
-Ejemplos:
-- `docs(adr): agrega decisiones del MVP`
-- `feat(captura): parsea notificaciones de yape`
-- `fix(movimientos): evita duplicar yapeos que llegan por dos fuentes`
-- `chore: ignora .idea en git`
-
-## Consecuencias
-- Historial legible y base para generar changelog y versiones automáticamente más adelante.
-- Un commit = un cambio con un solo propósito.
-- Sin verificación automática por ahora (no hay commitlint); se revisa a mano.
+**Tipos:** `feat`, `fix`, `docs`, `refactor`, `test`, `chore`, `build`, `ci`, `perf`, `style`. `fix` solo corrige errores de comportamiento.
+**Alcances:** `captura`, `movimientos`, `categorizacion`, `analisis`, `cuenta`, `android`, `ios`, `adr`, `docs`.
+**Idioma:** tipo y alcance como arriba; descripción en español.
+**Ejemplos:** `feat(captura): parsea notificaciones de yape`, `docs(adr): adopta formato propio de adrs`.

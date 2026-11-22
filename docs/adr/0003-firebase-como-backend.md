@@ -1,19 +1,25 @@
-# 0003. Firebase como backend
-
-Estado: Aceptada
+# ADR-003 - Firebase como backend
+**Categoría:** Infraestructura y backend
 
 ## Contexto
-Se necesita cuenta de usuario y sincronización entre dispositivos, con el menor costo de montaje posible.
+Se necesita cuenta de usuario y sincronización entre dispositivos con el menor costo de montaje posible.
+
+**Supuestos:** el equipo prioriza llegar al MVP y necesita soporte para trabajar sin conexión.
+**Restricciones:** son datos financieros sensibles, sujetos a la Ley 29733 (Perú) y a las políticas de las tiendas.
+
+## Alternativas
+1. **Supabase.** PostgreSQL administrado con Auth y API automática. Descartado por tener un SDK de Flutter menos maduro y exigir cuidar las políticas de acceso (RLS).
+2. **Backend propio con PostgreSQL.** Control total. Descartado por ser lo más lento y caro de montar y mantener en un MVP.
+3. **Firebase.** Authentication, Firestore y Cloud Functions con SDK oficial para Flutter.
+
+## Criterios de Elección
+Rapidez de montaje, madurez del SDK de Flutter y soporte sin conexión.
 
 ## Decisión
-**Firebase**: Authentication, Firestore y Cloud Functions, con los SDK oficiales de Flutter.
+Se adopta Firebase como backend del MVP. PostgreSQL se pospone.
 
-## Consecuencias
-- Rapidez de montaje y buen soporte offline propio de Firestore.
-- Dependencia de Google; migrar después costaría trabajo.
-- Las consultas analíticas pesadas son limitadas: los agregados del dashboard se calculan en el dispositivo o con Functions.
-- Son datos financieros sensibles: reglas de seguridad estrictas por usuario y cumplimiento de la Ley 29733 (Perú) desde el inicio.
-- Es la base para leer correos de bancos en iOS más adelante (0006).
+## Sustento
+Cubre autenticación, datos y funciones sin construir una API, y es la base para leer correos de bancos en iOS más adelante (ADR-006). Los riesgos son la dependencia de Google y las consultas analíticas limitadas, que se mitigan calculando los agregados del dashboard en el dispositivo o con Functions. PostgreSQL se reconsidera si el análisis de gastos necesita consultas SQL pesadas.
 
-## Alternativas evaluadas
-- **PostgreSQL (propio o Supabase):** da SQL potente para el análisis, pero exige construir la API de sincronización o aceptar un SDK de Flutter menos maduro. Pospuesto; ver 0004.
+## Aplicación en conto
+Reglas de seguridad estrictas por usuario en Firestore y cumplimiento de la Ley 29733 desde el inicio.
